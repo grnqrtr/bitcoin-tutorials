@@ -4,10 +4,10 @@
 
 # set version (change if update is available)
 # https://bitcoincore.org/en/download/
-bitcoinVersion="0.20.0"
+bitcoinVersion="0.20.1"
 
 # needed to check code signing
-laanwjPGP="01EA5486DE18A882D4C2684590C8019E36C2E964"
+luke-jrPGP="E463A93F5F3117EEDE6C7316BD02942421F4889F"
 
 echo "Detecting CPU architecture ..."
 isARM=$(uname -m | grep -c 'arm')
@@ -45,22 +45,22 @@ sudo -u admin mkdir /home/admin/download 2>/dev/null
 cd /home/admin/download
 
 # download, check and import signer key
-sudo -u admin wget https://bitcoin.org/laanwj-releases.asc
-if [ ! -f "./laanwj-releases.asc" ]
+sudo -u admin wget https://bitcoinknots.org/luke-jr.asc
+if [ ! -f "./luke-jr.asc" ]
 then
-  echo "!!! FAIL !!! Download laanwj-releases.asc not success."
+  echo "!!! FAIL !!! Download luke-jr.asc not success."
   exit 1
 fi
-gpg ./laanwj-releases.asc
-fingerprint=$(gpg ./laanwj-releases.asc 2>/dev/null | grep "${laanwjPGP}" -c)
+gpg ./luke-jr.asc
+fingerprint=$(gpg ./luke-jr.asc 2>/dev/null | grep "${luke-jrPGP}" -c)
 if [ ${fingerprint} -lt 1 ]; then
   echo ""
   echo "!!! BUILD WARNING --> Bitcoin PGP author not as expected"
-  echo "Should contain laanwjPGP: ${laanwjPGP}"
+  echo "Should contain luke-jrPGP: ${luke-jrPGP}"
   echo "PRESS ENTER to TAKE THE RISK if you think all is OK"
   read key
 fi
-gpg --import ./laanwj-releases.asc
+gpg --import ./luke-jr.asc
 
 # download signed binary sha256 hash sum file and check
 sudo -u admin wget https://bitcoin.org/bin/bitcoin-core-${bitcoinVersion}/SHA256SUMS.asc
